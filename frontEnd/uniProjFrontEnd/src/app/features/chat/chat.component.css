@@ -1,0 +1,17 @@
+.element{
+    display: flex;
+}
+.btn{
+    display: inline-block;
+    border: solid #dedede;
+    padding: 6px;
+    border-radius: 14px;
+}
+.left-side{
+    width: 30%;
+    display: inline-block;
+}
+.right-side{
+    width: 70%;
+    display: inline-block;
+}

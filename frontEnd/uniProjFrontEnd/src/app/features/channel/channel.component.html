@@ -1,0 +1,78 @@
+@if (loggedUser) {
+<h3>Hello, {{ loggedUser.userName }}</h3>
+@if(activeChannel){
+<h4>Looking at the channel: {{activeChannel.channelName}}</h4>
+} }
+<div>
+  <div class="left-side">
+    <custom-data-grid
+      [inputIsAMenu]="true"
+      [inputLoggedUser]="loggedUser"
+      [inputUserIsGuest]="userIsGuest"
+      [inputUserIsChannelOwner]="userIsChannelOwner"
+      [inputUserIsAdmin]="userIsAdmin"
+      [inputIsOnChannelList]="isOnChannelList"
+      [inputIsOnUserList]="isOnUserList"
+      [inputIsOnJoinedUsersList]="isOnJoinedUsersList"
+      (onLogout)="processOnLogout()"
+      (onUserList)="processOnShowUsers()"
+      (onFriendList)="processOnShowFriends()"
+      (onChannel)="processOnShowChannels()"
+      (onRemove)="processOnDeleteServer()"
+      (onAddNewUsersToChannel)="processOnOpenUserListToAdd()"
+    >
+    </custom-data-grid>
+  </div>
+
+  <div class="right-side">
+    <custom-data-grid
+      [inputHeaderConfig]="dataGridMapping"
+      [inputLoggedUser]="loggedUser"
+      [inputDataSource]="dataSourceForInput"
+      [inputIsOnChannelList]="isOnChannelList"
+      [inputIsOnUserList]="isOnUserList"
+      [inputIsOnJoinedUsersList]="isOnJoinedUsersList"
+      [inputHasChat]="isOnChannelList"
+      [inputUserIsGuest]="userIsGuest"
+      [inputUserIsChannelOwner]="userIsChannelOwner"
+      [inputUserIsAdmin]="userIsAdmin"
+      (onOpenChat)="processOnOpenChat($event)"
+      (onUserList)="processOnOpenChannelUserList($event)"
+      (onPromote)="processOnPromote($event)"
+      (onRemove)="provessOnRemoveUser($event)"
+      (onAddUserToCurrentChannel)="processOnAddUserToChannel($event)"
+    >
+    </custom-data-grid>
+    @if (isOnChannelList) {
+    <div class="msgBox">
+      <input
+        #inputValue
+        type="text"
+        class="msgBox-text"
+        (keyup.enter)="processOnCreateChannel(inputValue.value)"
+      />
+      <button
+        (click)="processOnCreateChannel(inputValue.value)"
+        class="msgBox-btn"
+      >
+        Create channel
+      </button>
+    </div>
+    } @else if (isOnJoinedUsersList && (userIsAdmin||userIsChannelOwner)) {
+    <div class="msgBox">
+      <input
+        #inputValue
+        type="text"
+        class="msgBox-text"
+        (keyup.enter)="processOnRenameChannel(inputValue.value)"
+      />
+      <button
+        (click)="processOnRenameChannel(inputValue.value)"
+        class="msgBox-btn"
+      >
+        Rename channel
+      </button>
+    </div>
+    }
+  </div>
+</div>

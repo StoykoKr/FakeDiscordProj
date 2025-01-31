@@ -1,0 +1,43 @@
+
+@if (loggedUser) {
+<h3>Hello, {{ loggedUser.userName }}</h3>
+} @else {
+<h3>Not logged in.</h3>
+}
+<div>
+  <div class="left-side">
+    <custom-data-grid
+      [inputDataSource]="userCollection"
+      [inputIsAMenu]="true"
+      [inputLoggedUser]="loggedUser"
+      (onLogout)="processOnLogout()"
+      (onUserList)="processOnShowUsers()"
+      (onFriendList)="processOnShowFriends()"
+      (onChannel)="processOnShowChannels()"
+    >
+    </custom-data-grid>
+  </div>
+
+  <div class="right-side">
+    <custom-data-grid
+      [inputHeaderConfig]="dataGridMapping"
+      [inputDataSource]="userCollection"
+      [inputLoggedUser]="loggedUser"
+      [inputIsRemovable]="true"
+      [inputIsBefriendable]="true"
+      [inputIsCurrentlyShowingFriends]="showingFriends"
+      [inputHasChat]="true"
+      (onRemove)="processOnDeleteUser($event)"
+      (onLogin)="processOnLogin($event)"
+      (onAddFriend)="processOnAddFriend($event)"
+      (onRemoveFriend)="processOnRemoveFriend($event)"
+      (onOpenChat)="processOnOpenChat($event)"
+    >
+    </custom-data-grid>
+    <div><input #inputValue type="text" />
+      <button (click)="processOnCreateUserCreation(inputValue.value)">
+        Create
+      </button></div>
+  </div>
+  
+</div>

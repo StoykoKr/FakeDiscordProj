@@ -1,0 +1,96 @@
+<!-- Търсих начин да форматирам кода да е по-четим.. намерих но имаше обратен ефект при if-ове-->
+
+@if(inputIsAMenu){
+<table class="data-grid-menu">
+  @if(inputLoggedUser != null){
+  <!--редя бутони ако е логнат?-->
+  <tr>
+    <td (click)="onLogout.emit()">Logout</td>
+    <td (click)="onChannel.emit()">Show channels</td>
+  </tr>
+  <tr>
+    <td (click)="onUserList.emit()">Show users</td>
+    <td (click)="onFriendList.emit()">Show friends</td>
+  </tr>
+  @if(inputIsOnJoinedUsersList){
+  <tr>
+    @if(inputUserIsChannelOwner){
+    <td (click)="onRemove.emit()">DeleteServer</td>
+    } @if(inputUserIsAdmin || inputUserIsChannelOwner){
+    <td (click)="onAddNewUsersToChannel.emit()">Invite new users</td>
+    }
+  </tr>
+  } } @else {
+  <!--бутони ако не е логнат-->
+  <tr>
+    <td>We don't have buttons for those who are not logged in</td>
+  </tr>
+  }
+</table>
+
+} @else{
+<table class="data-grid">
+  <tr class="data-grid--header">
+    @for(headerElement of inputHeaderConfig; track headerElement.id) {
+    <td>{{ headerElement.column }}</td>
+    }
+  </tr>
+
+  @if(!(inputDataSource?.length)) {
+  <div>No data found</div>
+  } @for(dataElement of inputDataSource; track dataElement) { @if($index
+  >=inputPage*10 && $index < (inputPage+1)*10) {
+  <tr class="data-grid--content">
+    @for(contentElement of inputHeaderConfig; track contentElement.id) { @if
+    (inputIsOnChatPage && contentElement.value == "sender") {
+    <td>
+      {{ dataElement[contentElement.value].userName }}
+    </td>
+    } @else if(inputIsOnChannelList){
+    <td>
+      {{ dataElement[contentElement.value] }}
+    </td>
+    }@else if (inputIsOnJoinedUsersList) { @if (contentElement.value == "user")
+    {
+    <td>
+      {{ dataElement[contentElement.value].userName }}
+    </td>
+    } @else {
+    <td>
+      {{ dataElement[contentElement.value] }}
+    </td>
+    @if(inputUserIsChannelOwner&&(dataElement[contentElement.value]=="Guest" ||
+    dataElement[contentElement.value]=="Admin") ){
+    <td (click)="onRemove.emit(dataElement)">Remove</td>
+    } @if (inputUserIsChannelOwner && dataElement[contentElement.value]=="Guest") {
+    <td (click)="onPromote.emit(dataElement)">Promote</td>
+    } } } @else {
+    <td>
+      {{ dataElement[contentElement.value] }}
+    </td>
+    } } @if(inputIsOnUserList && (inputUserIsAdmin||inputUserIsChannelOwner)){
+    <td (click)="onAddUserToCurrentChannel.emit(dataElement)">Add</td>
+    } @if(inputLoggedUser == null) {
+    <td (click)="onLogin.emit(dataElement)">Login</td>
+    } @else{ @if((inputHasChat && inputIsCurrentlyShowingFriends) ||
+    inputIsOnChannelList){
+    <td (click)="onOpenChat.emit(dataElement)">Chat</td>
+    } @if (inputIsOnChannelList) {
+    <td (click)="onUserList.emit(dataElement)">Users</td>
+    } @if(!inputIsCurrentlyShowingFriends && inputIsBefriendable){
+    <td (click)="onAddFriend.emit(dataElement)">Add friend</td>
+    } } @if(inputIsRemovable) { @if(inputIsCurrentlyShowingFriends){
+    <td (click)="onRemoveFriend.emit(dataElement)">Unfriend</td>
+    } @else{
+
+    <td (click)="onRemove.emit(dataElement)">Remove</td>
+    } }
+  </tr>
+  } }
+  <tr>
+    <td (click)="onClickGoingLeft()">Previous page</td>
+    <td>{{ inputPage }}</td>
+    <td (click)="onClickGoingRight()">Next page</td>
+  </tr>
+</table>
+}

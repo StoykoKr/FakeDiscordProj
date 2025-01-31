@@ -1,0 +1,35 @@
+.data-grid {
+    width             : 100%;
+    border            : solid #dedede 1px;
+    border-collapse   : collapse;
+  }
+  
+  .data-grid tr td {
+    padding: 8px;
+  }
+  
+  .data-grid tr:hover {
+    background: #dfdfdf;
+  }
+  .data-grid tr td:hover {
+    background: #d1d1d1;
+  }
+
+  .data-grid--header {
+    font-weight: bold;
+    border-bottom: solid #dedede 1px;
+  }
+
+.data-grid-menu {
+  width: 100%;
+}
+.data-grid-menu tr td{
+  padding: 16px;
+  border: solid #dedede;
+  text-align: center;
+  background-color: #a88f8f27;
+}
+.data-grid-menu tr td:hover{
+  background: #3d343427;
+}
+  

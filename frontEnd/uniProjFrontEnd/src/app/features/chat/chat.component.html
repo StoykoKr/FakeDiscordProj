@@ -1,0 +1,41 @@
+@if (loggedUser) {
+<h3>Hello, {{ loggedUser.userName }}</h3>
+}
+<div>
+  <div class="left-side">
+    <custom-data-grid
+      [inputIsAMenu]="true"
+      [inputLoggedUser]="loggedUser"
+      (onUserList)="processOnShowUsers()"
+      (onFriendList)="processOnShowFriends()"
+      (onLogout)="processOnLogout()"
+      (onChannel)="processOnShowChannels()"
+    >
+    </custom-data-grid>
+  </div>
+
+  <div class="right-side">
+    <custom-data-grid
+      [inputHeaderConfig]="dataGridMapping"
+      [inputDataSource]="currentChat?.messages"
+      [inputLoggedUser]="loggedUser"
+      [inputIsOnChatPage]="true"
+    >
+    </custom-data-grid>
+
+    <div class="msgBox">
+      <input
+        #inputValue
+        type="text"
+        class="msgBox-text"
+        (keyup.enter)="processOnMessagePublication(inputValue.value)"
+      />
+      <button
+        (click)="processOnMessagePublication(inputValue.value)"
+        class="msgBox-btn"
+      >
+        Publish
+      </button>
+    </div>
+  </div>
+</div>
