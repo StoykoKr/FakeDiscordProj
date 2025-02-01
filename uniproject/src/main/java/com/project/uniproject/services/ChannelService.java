@@ -89,6 +89,7 @@ public class ChannelService {
     public ChannelDTO createChannel(Channel channel, int creatorId) {
         Optional<User> user = userRepository.findById(creatorId);
         if (user.isPresent()) {
+            channel.setIsActive(1);
             Channel ch = channelRepository.save(channel);
             ChannelUser channelUser = new ChannelUser();
             channelUser.setChannel(ch);
@@ -105,15 +106,18 @@ public class ChannelService {
     }
 
     @Transactional
-    public boolean deleteChannel(int channelId, int userId) {
+    public int deleteChannel(int channelId, int userId) {
         Optional<ChannelUser> channelUser = channelUserRepository.findByChannelIdAndUserId(channelId, userId);
-        if (channelUser.isPresent() && channelUser.get().getChannelRole().equals("Owner")) {
+        if (channelUser.isPresent()) {
+            if(channelUser.get().getChannelRole().equals("Owner")){
             if (channelUser.get().getChannel().getIsActive() == 1) {
                 channelUser.get().getChannel().setIsActive(0);
-                return true;
+                return 0;
+                 }
             }
+            return 1;
         }
-        return false;
+        return 2;
     }
 
     public List<User> getAllUsersNotInChannel(int channelId) {
@@ -180,17 +184,24 @@ public class ChannelService {
         return null;
     }
 
-    @Transactional
+
     public ChannelDTO updateChannel(int userId, Channel updatedChannel) {
+
         Optional<ChannelUser> channelUser = channelUserRepository.findByChannelIdAndUserId(updatedChannel.getId(), userId);
-        if (channelUser.isPresent() && channelUser.get().getIsActive() == 1 && (channelUser.get().getChannelRole().equals("Admin") || channelUser.get().getChannelRole().equals("Owner"))) {
-            Optional<Channel> channel = channelRepository.findById(updatedChannel.getId());
-            if(channel.isPresent() && channel.get().getIsActive()==1){
-                channel.get().setChannelName(updatedChannel.getChannelName());
-                 return new ChannelDTO(channel.get());
+
+        if (channelUser.isPresent() && channelUser.get().getIsActive() == 1) {
+            if((channelUser.get().getChannelRole().equals("Admin") || channelUser.get().getChannelRole().equals("Owner"))) {
+                Optional<Channel> channel = channelRepository.findById(updatedChannel.getId());
+                if (channel.isPresent() && channel.get().getIsActive() == 1) {
+                    channel.get().setChannelName(updatedChannel.getChannelName());
+                    channelRepository.save(channel.get());
+                    return new ChannelDTO(channel.get());
+                }
+                return  new ChannelDTO(2);
             }
+            return new ChannelDTO(1);
         }
-        return null;
+        return new ChannelDTO(2);
     }
 
     @Transactional

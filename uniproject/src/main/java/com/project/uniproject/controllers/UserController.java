@@ -82,8 +82,6 @@ public class UserController {
         }
 
     }
-
-
     @GetMapping("/users/{id}/friends")
     public ResponseEntity<?> getAllFriends(@PathVariable int id) {
         var response = userService.getAllFriendsOf(id);

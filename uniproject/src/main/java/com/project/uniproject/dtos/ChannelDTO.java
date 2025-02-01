@@ -38,4 +38,9 @@ public class ChannelDTO {
         this.channelName = channel.getChannelName();
         this.isActive = channel.getIsActive();
     }
+    public ChannelDTO(int fake) {
+        this.id = -1;
+        this.channelName = null;
+        this.isActive = -fake;
+    }
 }

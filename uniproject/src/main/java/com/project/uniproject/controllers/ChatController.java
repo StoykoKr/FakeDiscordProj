@@ -95,6 +95,7 @@ public class ChatController {
                 .withData(response)
                 .build();
     }
+
     @GetMapping("/chats/{id}")
     public ResponseEntity<?> getChatById(@PathVariable int id){
         var response = chatService.getChatById(id);

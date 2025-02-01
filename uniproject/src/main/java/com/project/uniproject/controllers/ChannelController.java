@@ -5,6 +5,7 @@ import com.project.uniproject.entities.Channel;
 import com.project.uniproject.entities.ChannelUser;
 import com.project.uniproject.http.Responses;
 import com.project.uniproject.services.ChannelService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -40,10 +41,13 @@ public class ChannelController {
     @DeleteMapping("/users/{userId}/channels/{channelId}")
     public ResponseEntity<?> deleteChannel(@PathVariable int userId,@PathVariable int channelId) {
         var response = channelService.deleteChannel(channelId, userId);
-        if (response) {
-            return Responses.success().withMessage("Channel deleted").withData(response).build();
-        } else {
-            return Responses.error().withMessage("Error deleting channel").withData(response).build();
+        if (response==0) {
+            return Responses.success().withMessage("Channel deleted").build();
+        } else if(response==1){
+            return Responses.error().withMessage("Error deleting channel. User not owner!").withCode(HttpStatus.FORBIDDEN).build();
+        }
+        else{
+            return Responses.error().withMessage("Error deleting channel. Could not find user or channel.. or a connection between them").withCode(HttpStatus.NOT_FOUND).build();
         }
     }
 
@@ -61,10 +65,12 @@ public class ChannelController {
     public ResponseEntity<?> updateChannelName(@PathVariable int userId, @RequestBody Channel updatedChannel) {
         var response = channelService.updateChannel(userId, updatedChannel);
 
-        if (response != null) {
+        if (response.getIsActive() == 1) {
             return Responses.success().withMessage("Channel updated").withData(response).build();
+        } else if (response.getIsActive() == -1) {
+            return Responses.error().withMessage("Error with updating channel. User lacks permission").withCode(HttpStatus.FORBIDDEN).build();
         }
-        return Responses.error().withMessage("Error with updating channel. Lacks permission or not existing").withData(response).build();
+        return Responses.error().withMessage("Error with updating channel. User or channel or their connection don't exist").withCode(HttpStatus.NOT_FOUND).build();
 
     }
 
@@ -82,7 +88,7 @@ public class ChannelController {
     public ResponseEntity<?> removeUserFromChannel(@PathVariable int ownerId,@PathVariable int channelId,@PathVariable int removedUserID) {
         var isRemoved = channelService.removeUserFromChannel(ownerId,channelId,removedUserID);
         if(isRemoved){
-          return Responses.success().withMessage("Showing all active channels of user").withData(isRemoved).build();
+          return Responses.success().withMessage("User removed from channel").withData(isRemoved).build();
         }
         return Responses.error().withMessage("Could not perform the removal.").withData(isRemoved).build();
     }
