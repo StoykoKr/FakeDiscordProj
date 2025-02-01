@@ -1,0 +1,214 @@
+{
+	"info": {
+		"_postman_id": "455d1eb9-952e-4d6e-b326-2d62b755a8cf",
+		"name": "TestsForFakeDiscord",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "39143217"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "getAllActiveUsers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://127.0.0.1:8201/users/active"
+					},
+					"response": []
+				},
+				{
+					"name": "createNewUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\": \"nov user\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:8201/users"
+					},
+					"response": []
+				},
+				{
+					"name": "createChannel",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"channelName\": \"Nai noviq kanal\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:8201/users/38/channels/createChannel"
+					},
+					"response": []
+				},
+				{
+					"name": "deleteOwnChannel",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://127.0.0.1:8201/users/38/channels/15"
+					},
+					"response": []
+				},
+				{
+					"name": "removeGuestFromOwnChannel",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://127.0.0.1:8201/users/10/channels/3/delete/31"
+					},
+					"response": []
+				},
+				{
+					"name": "getAllChannelsOfUser",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://127.0.0.1:8201/users/34/channels"
+					},
+					"response": []
+				},
+				{
+					"name": "getAllFriendsOfUser",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://127.0.0.1:8201/users/34/friends"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "createMessageInFriendsChat",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"messageContent\": \"message from Postman to friends chat\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:8201/users/33/chat/28"
+					},
+					"response": []
+				},
+				{
+					"name": "createMessageInFriendsChat Copy",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"messageContent\": \"message from Postman to a big channel chat\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:8201/users/33/chat/27"
+					},
+					"response": []
+				},
+				{
+					"name": "getUserChatWthFriend",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://127.0.0.1:8201/users/33/friends/34/chat"
+					},
+					"response": []
+				},
+				{
+					"name": "getChannelChat",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://127.0.0.1:8201/users/34/channels/13/chat"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "rights",
+			"item": [
+				{
+					"name": "deleteOwnChannel",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://127.0.0.1:8201/users/38/channels/16"
+					},
+					"response": []
+				},
+				{
+					"name": "promoteUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "http://127.0.0.1:8201/users/38/channels/17/promote/27"
+					},
+					"response": []
+				},
+				{
+					"name": "deleteGuestAttempt",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://127.0.0.1:8201/users/33/channels/17"
+					},
+					"response": []
+				},
+				{
+					"name": "editChannelName",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 17,\r\n    \"channelName\": \"newNameForTheChannel\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:8201/users/33/channels"
+					},
+					"response": []
+				},
+				{
+					"name": "adminAddsNewUserToChannel",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "http://127.0.0.1:8201/users/27/channels/17/addUser/34"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
